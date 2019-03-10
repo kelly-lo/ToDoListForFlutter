@@ -1,14 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:path/path.dart';
-
-//void main() {
-//  runApp(new MyApp
-//    (
-//    title: new Text("To-Do List"),
-//    subtitle: new Text("This is a to-do list"),
-//  )
-//  );
-//}
 
 void main() =>
     runApp(MaterialApp(home: MyApp(
@@ -17,16 +7,7 @@ void main() =>
     ),
     ));
 
-class Constants {
-  static const String Archive = "Deleted Tasks";
-  static const String Clear = "Clear All";
-
-  static const List<String> choices = <String>[
-    Archive,
-    //Clear
-  ];
-}
-
+// This class calls the main page of the checklist
 class MyApp extends StatefulWidget {
   MyApp({this.title, this.subtitle});
 
@@ -36,20 +17,7 @@ class MyApp extends StatefulWidget {
   MyAppState createState() => new MyAppState();
 }
 
-//class MyAppState extends State<MyApp> {
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return new MaterialApp(
-//        home: new CheckListWidget());
-//  }
-//}
-//
-//class CheckListWidget extends StatefulWidget {
-//  @override
-//  MyAppState createState() => new MyAppState();
-//}
-
+// This is the state that extends MyApp that includes all the working functions
 class MyAppState extends State<MyApp> {
 
   TextEditingController eCtrl = new TextEditingController();
@@ -58,9 +26,9 @@ class MyAppState extends State<MyApp> {
   static const String Archive = "Deleted Tasks";
   static const String Clear = "Clear All";
 
+  // This is for the pop up menu
   static const List<String> choices = <String>[
     Archive,
-    //Clear
   ];
 
   // List of all the to-do items
@@ -86,6 +54,7 @@ class MyAppState extends State<MyApp> {
           title: widget.title,
           backgroundColor: Colors.green,
           actions: <Widget>[
+
             // Button to add
             new IconButton(
               icon: new Icon(Icons.add_circle),
@@ -95,15 +64,19 @@ class MyAppState extends State<MyApp> {
                 });
               },
             ),
+
+            // Button to delete
             new IconButton(
               icon: new Icon(Icons.delete),
               onPressed: () {
                 int counter = 0;
                 while (counter < textList.length) {
                   if (checkValue[counter] == true) {
+                    // Adds deleted text into the deleted list
                     removedList.add(textList[counter]);
                     checkValueRemove.add(false);
-                    //print(removedList.length);
+
+                    // Removes from the list
                     checkValue.removeAt(counter);
                     textList.removeAt(counter);
                     counter = 0;
@@ -114,8 +87,9 @@ class MyAppState extends State<MyApp> {
                 setState(() {});
               },
             ),
+
+            // Creates the popup menu to access deleted tasks
             new PopupMenuButton<String>(
-              onCanceled: () => print("Nothing was chosen"),
               onSelected: choiceAction,
               itemBuilder: (BuildContext context) {
                 return choices.map((String choice) {
@@ -124,16 +98,12 @@ class MyAppState extends State<MyApp> {
                     child: Text(choice),
                   );
                 }).toList();
-//                  return choices.map( (String choice) (
-//                    return new PopupMenuItem<String>(
-//                      value: choice,
-//                      child: Text(choice),
-//                    )
-//                  )).toList();
               },
             ),
           ],
         ),
+
+        // This is the background color
         backgroundColor: Colors.white,
         body: new Column(
           children: <Widget>[
@@ -144,19 +114,22 @@ class MyAppState extends State<MyApp> {
                 controller: eCtrl,
                 decoration: new InputDecoration.collapsed(hintText: "ADD"),
                 maxLines: 3,
-                onSubmitted: (String text) {
-
-                },
+                onSubmitted: (String text) { },
               ),
               actions: <Widget>[
+
+                // This is the cancel button for to add a task into the task list
                 new FlatButton(
                     onPressed: () {
                       setState(() {
                         showDialog = false;
                         eCtrl.clear();
-                      }); //Navigator.of(context).pop();
+                      });
                     },
-                    child: new Text("CANCEL")),
+                    child: new Text("CANCEL")
+                ),
+
+                // This is the button to add it into the task list
                 new FlatButton(
                     onPressed: () {
                       setState(() {
@@ -173,6 +146,7 @@ class MyAppState extends State<MyApp> {
               ],
             ) : new Text(""),
 
+            // Construct the check list
             new Flexible(
                 child: new ListView.builder(
                     itemCount: textList.length,
@@ -197,8 +171,8 @@ class MyAppState extends State<MyApp> {
     //);
   }
 
+  // This is called by the popup menu button to push the archived page
   void choiceAction(String choice) {
-    //BuildContext context;
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SecondPage()),
@@ -206,6 +180,7 @@ class MyAppState extends State<MyApp> {
   }
 }
 
+// This is the class that creates the state for the second page
 class SecondPage extends StatefulWidget {
 
   @override
@@ -214,6 +189,7 @@ class SecondPage extends StatefulWidget {
   }
 }
 
+// This is the second page for the archive list
 class SecondPageState extends State<SecondPage> {
 
   @override
@@ -231,6 +207,7 @@ class SecondPageState extends State<SecondPage> {
             title: new Text("Archived List"),
             backgroundColor: Colors.lightGreen,
             actions: <Widget>[
+
               // Button to add back into the list from deleted
               new IconButton(
                 icon: new Icon(Icons.add_circle),
@@ -241,27 +218,10 @@ class SecondPageState extends State<SecondPage> {
                       showReAddDialog = true;
                     }
                   });
-
-//                  int counterRemoved = 0;
-//                  while (counterRemoved < MyAppState.removedList.length) {
-//                    if (MyAppState.checkValueRemove[counterRemoved] == true) {
-//                      // Adds it back into the text list
-//                      MyAppState.textList.add(
-//                          MyAppState.removedList[counterRemoved]);
-//                      MyAppState.checkValue.add(false);
-//
-//                      // Removes items from the deleted file
-//                      MyAppState.removedList.removeAt(counterRemoved);
-//                      MyAppState.checkValueRemove.removeAt(counterRemoved);
-//
-//                      counterRemoved = 0;
-//                    } else {
-//                      counterRemoved++;
-//                    } // End if-statement
-//                  } // End while loop
-//                  setState(() {});
                 },
               ),
+
+              // Button to permanently delete task
               new IconButton(
                   icon: new Icon(Icons.delete),
                   onPressed: () {
@@ -276,10 +236,14 @@ class SecondPageState extends State<SecondPage> {
         backgroundColor: Colors.white,
         body: new Column(
           children: <Widget>[
+
+            // Show alert dialog asking confirmation to recover deleted task
             showReAddDialog == true ?
             new AlertDialog(
               title: new Text("Re-add to your To-Do list?"),
               actions: <Widget>[
+
+                // This is the button of to confirm yes
                 new FlatButton(
                     onPressed: () {
                       int counterRemoved = 0;
@@ -305,7 +269,10 @@ class SecondPageState extends State<SecondPage> {
                         showReAddDialog = false;
                       }); //Navigator.of(context).pop();
                     },
-                    child: new Text("Yes")),
+                    child: new Text("Yes")
+                ),
+
+                // This is the button to cancel recovering
                 new FlatButton(
                     onPressed: () {
                       setState(() {
@@ -317,10 +284,13 @@ class SecondPageState extends State<SecondPage> {
               ],
             ) : new Text(""),
 
+            // Show the delete permanently dialog
             showDeleteDialog == true ?
             new AlertDialog(
               title: new Text("Do you want to delete this forever?"),
               actions: <Widget>[
+
+                // Button for yes to delete permanently
                 new FlatButton(
                     onPressed: () {
                       int counterRemoved = 0;
@@ -341,7 +311,10 @@ class SecondPageState extends State<SecondPage> {
                         showDeleteDialog = false;
                       }); //Navigator.of(context).pop();
                     },
-                    child: new Text("Yes")),
+                    child: new Text("Yes")
+                ),
+
+                // This is the button to cancel deleting permanently
                 new FlatButton(
                     onPressed: () {
                       setState(() {
@@ -353,6 +326,7 @@ class SecondPageState extends State<SecondPage> {
               ],
             ) : new Text(""),
 
+            // Constructs the list
             new Flexible(
                 child: new ListView.builder(
                     itemCount: MyAppState.removedList.length,
@@ -377,6 +351,9 @@ class SecondPageState extends State<SecondPage> {
     );
   }
 }
+
+/*********************************** STOP *************************************/
+/********************** COPY EVERYTHING ABOVE THIS LINE ***********************/
 //    return new Scaffold(
 //      appBar: new AppBar(
 //        title: new Text("Title"),
