@@ -134,9 +134,13 @@ class MyAppState extends State<MyApp> {
                     onPressed: () {
                       setState(() {
                         showDialog = false;
+                        // If the task inputted is not empty
                         if ((eCtrl.text.isNotEmpty)) {
+                          // Add task into the list
                           textList.add(eCtrl.text);
+                          // Add a checkbox value corresponding to the task
                           checkValue.add(false);
+                          // Clear the text
                           eCtrl.clear();
                         }
                       });
@@ -168,7 +172,7 @@ class MyAppState extends State<MyApp> {
           ],
         )
     );
-    //);
+   // );//);
   }
 
   // This is called by the popup menu button to push the archived page
